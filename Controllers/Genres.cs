@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ namespace MoviesAPIWork.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors(PolicyName = "AllowAPIRequestIO")]
+
     // public class GenresController : ControllerBase
     public class GenresController : ControllerBase
 
@@ -100,6 +103,8 @@ namespace MoviesAPIWork.Controllers
         }
 
         [HttpDelete("{id}")]
+
+        [DisableCors]
         public async Task<ActionResult> Delete(int id)
         {
             var exists = await context.Genres.AnyAsync(x => x.Id == id);

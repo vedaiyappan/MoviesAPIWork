@@ -35,6 +35,13 @@ namespace MoviesAPIWork
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAPIRequestIO",
+                    builder => builder.WithOrigins("https://www.apirequest.io")
+                    .WithMethods("GET", "POST").AllowAnyHeader());
+            });
+
             services.AddAutoMapper(typeof(Startup));
 
             //services.AddTransient<IFileStorageService, AzureStorageService>();
@@ -113,6 +120,13 @@ namespace MoviesAPIWork
 
 
             app.UseAuthorization();
+
+            app.UseCors();
+
+            // This policy would be applied at the Web API level
+            //app.UseCors(builder =>
+            //builder.WithOrigins("https://www.apirequest.io").WithMethods("GET", "POST").AllowAnyHeader());
+
 
             app.UseEndpoints(endpoints =>
             {
